@@ -1,0 +1,66 @@
+[Format]      =  1
+[Precision]   =  1e-008
+[MinAngle]    =  30
+[DoSmartMesh] =  1
+[Depth]       =  20
+[LengthUnits] =  millimeters
+[ProblemType] =  planar
+[Coordinates] =  cartesian
+[Comment]     =  "Add comments here."
+[PointProps]   = 0
+[BdryProps]   = 0
+[BlockProps]  = 2
+  <BeginBlock>
+    <BlockName> = "Teflon"
+    <ex> = 2.2000000000000002
+    <ey> = 2.2000000000000002
+    <qv> = 0
+  <EndBlock>
+  <BeginBlock>
+    <BlockName> = "Air"
+    <ex> = 1
+    <ey> = 1
+    <qv> = 0
+  <EndBlock>
+[ConductorProps]  = 3
+  <BeginConductor>
+    <ConductorName> = "Infinity"
+    <Vc> = 0
+    <qc> = 0
+    <ConductorType> = 1
+  <EndConductor>
+  <BeginConductor>
+    <ConductorName> = "Top"
+    <Vc> = 1
+    <qc> = 0
+    <ConductorType> = 1
+  <EndConductor>
+  <BeginConductor>
+    <ConductorName> = "Bottom"
+    <Vc> = -1
+    <qc> = 0
+    <ConductorType> = 1
+  <EndConductor>
+[NumPoints] = 8
+0	50	0	0	0
+-50	0	0	0	0
+0	-50	0	0	0
+50	0	0	0	0
+10	5	0	0	0
+-10	5	0	0	0
+10	-5	0	0	0
+-10	-5	0	0	0
+[NumSegments] = 4
+4	5	-1	0	0	0	2
+5	7	-1	0	0	0	0
+7	6	-1	0	0	0	3
+4	6	-1	0	0	0	0
+[NumArcSegments] = 4
+3	0	90	1	0	0	0	1	1
+0	1	90	1	0	0	0	1	1
+1	2	90	1	0	0	0	1	1
+2	3	90	1	0	0	0	1	1
+[NumHoles] = 0
+[NumBlockLabels] = 2
+-5.5999999999999996	-0.20000000000000001	1	-1	0	0
+-0.90000000000000002	17	2	-1	0	0

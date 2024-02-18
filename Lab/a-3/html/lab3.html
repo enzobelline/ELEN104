@@ -1,0 +1,456 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>lab3</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-11-23"><meta name="DC.source" content="lab3.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">Modeling a simple permanent magnet</a></li><li><a href="#3">Field Sensor Responses</a></li><li><a href="#4">System-level Calculations</a></li></ul></div><pre class="codeinput">clc;
+clear <span class="string">all</span>;
+close <span class="string">all</span>;
+</pre><h2 id="2">Modeling a simple permanent magnet</h2><pre class="codeinput">x = linspace(-0.02,0.02);
+z = linspace(-0.02,0.02);
+C = 350/(5.8*10^(6));
+[X, Z] = meshgrid(x, z);
+
+th = atan2(X,Z);
+phi= atan2(Z,X);
+r  = sqrt(X.^2 + Z.^2);
+r(r &lt;=0.003) = NaN; <span class="comment">%excludes number smaller than</span>
+
+Br  = (C*2.*cos(th))./(r.^3);
+Bth = (C  .*sin(th) ./ r.^3);
+Bx  = cos(th).*Bth + sin(th).* Br ;
+Bz  = cos(th).*Br  - sin(th).* Bth;
+
+figure(1)
+quiver(x , z , Bx , Bz , 6 , <span class="string">'r'</span>);
+xlim([-0.02 , 0.02])
+ylim([-0.02 , 0.02])
+title(<span class="string">'Vector Plot of B'</span>)
+
+<span class="comment">%a) |B|</span>
+figure(2)
+magB = sqrt((Bx).^2 + (Bz).^2);
+pcolor (x , z , magB)
+axis <span class="string">equal</span>
+shading <span class="string">interp</span>
+xlim([-0.02 , 0.02])
+xticks([-0.02 , 0 , 0.02])
+xlabel(<span class="string">'x, m'</span>)
+yticks([-0.02 , 0 , 0.02])
+ylim([-0.02 , 0.02])
+ylabel(<span class="string">'z, m'</span>)
+title(<span class="string">'|B|'</span>)
+hold <span class="string">on</span>
+
+<span class="comment">%b) Magnitude of Bx</span>
+figure(3)
+magBx = abs(Bx);
+pcolor(x , z , magBx)
+axis <span class="string">equal</span>
+shading <span class="string">interp</span>
+xlim([-0.02 , 0.02])
+xticks([-0.02, 0, 0.02])
+xlabel(<span class="string">'x, m'</span>)
+ylim([-0.02 , 0.02])
+yticks([-0.02 , 0 , 0.02])
+ylabel(<span class="string">'z, m'</span>)
+title(<span class="string">'|Bx|'</span>)
+hold <span class="string">on</span>
+
+<span class="comment">%c) Magnitude of Bz</span>
+figure(4)
+magBz = abs(Bz);
+pcolor(x , z , magBz)
+axis <span class="string">equal</span>
+shading <span class="string">interp</span>
+xlim([-0.02 , 0.02])
+xlabel(<span class="string">'x, m'</span>)
+xticks([-0.02 , 0 , 0.02])
+ylim([-0.02,0.02])
+yticks([-0.02 , 0 , 0.02])
+ylabel(<span class="string">'z, m'</span>)
+title(<span class="string">'|Bz|'</span>)
+hold <span class="string">on</span>
+
+z    = 7*10^(-3);
+r    = sqrt(x.^2+z^2);
+th   = atan2(x, z);
+
+Bth  = sin(th) .* (C./(r.^3))  ;
+Br   = cos(th) .* (C./(r.^3))*2 ;
+
+Brz  = Br .* cos(th);
+Bthz = -1 .* Bth .*sin(th);
+Bz   =  Bthz + Brz;
+
+figure(5)
+plot(x , Bz);
+title(<span class="string">'Flux density with lateral displacement'</span>)
+xlabel(<span class="string">"x, m"</span>);
+xlim([-0.02 , 0.02])
+ylabel(<span class="string">"B_z, G"</span>);
+ylim([-50 , 400])
+grid <span class="string">on</span>
+</pre><img vspace="5" hspace="5" src="lab3_01.png" alt=""> <img vspace="5" hspace="5" src="lab3_02.png" alt=""> <img vspace="5" hspace="5" src="lab3_03.png" alt=""> <img vspace="5" hspace="5" src="lab3_04.png" alt=""> <img vspace="5" hspace="5" src="lab3_05.png" alt=""> <h2 id="3">Field Sensor Responses</h2><p>Flux Through a Moving Loop for Different Vs &amp; Induced EMF for diff vs</p><pre class="codeinput"> ph = zeros(1, 101);
+dph = zeros(1, 100);
+a = 10^(-6);
+z   = 0.03;
+<span class="keyword">for</span> V = [1, 2, 5, 10]
+    t = linspace(-0.04, 0.04, 101);
+    <span class="keyword">for</span> i = 1: length(t)
+        x  = t(i) * V;
+        th = atan2(x,z);
+        r  = sqrt(x.^2 + z.^2);
+
+        Br  = 2*C.*cos(th)./r.^3;
+        Bth =   C.*sin(th)./r.^3;
+
+        ph(i) = 1e4*(Br.*cos(th)-(Bth).*sin(th))*a;
+
+        <span class="keyword">if</span> i ~= 1
+           dph(i-1) =(ph(i) - ph(i-1))/(t(i)-t(i-1));
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+    tnew = t(1:(length(t)-1));
+
+    figure(6)
+    plot(t, ph)
+    title(<span class="string">'Flux Through a Moving Loop for Different Vs'</span>)
+    legend(<span class="string">'V = 1  m/s'</span>,<span class="string">'V = 2  m/s'</span>,<span class="string">'V = 5  m/s'</span>, <span class="string">'V = 10 m/s'</span>)
+    xlabel(<span class="string">'t, s'</span>)
+    ylabel(<span class="string">'\psi, T\bulletm^2'</span>)
+    hold <span class="string">on</span>
+
+    figure(7)
+    plot(tnew, dph)
+    title(<span class="string">'Induced EMF(t) for Varying Velocities'</span>)
+    legend(<span class="string">'V = 1  m/s'</span>,<span class="string">'V = 2  m/s'</span>,<span class="string">'V = 5  m/s'</span>, <span class="string">'V = 10 m/s'</span>)
+    xlabel(<span class="string">'t, s'</span>)
+    ylabel(<span class="string">'V_E_M_F(t),V'</span>)
+    hold <span class="string">on</span>
+<span class="keyword">end</span>
+    hold <span class="string">off</span>
+
+    figure(6)
+    xlim([-0.04,0.04])
+    xticks(-0.04: 0.01 :0.04)
+    ylim([-0.01,0.05])
+    yticks(-0.01: 0.01 :0.05)
+    grid <span class="string">on</span>
+
+    figure(7)
+    xlim([-0.04,0.04])
+    xticks(-0.04: 0.01 :0.04)
+    ylim([-30,30])
+    yticks(-30: 10 :30)
+    grid <span class="string">on</span>
+</pre><pre class="codeoutput">Warning: Ignoring extra legend entries. 
+Warning: Ignoring extra legend entries. 
+Warning: Ignoring extra legend entries. 
+Warning: Ignoring extra legend entries. 
+Warning: Ignoring extra legend entries. 
+Warning: Ignoring extra legend entries. 
+</pre><img vspace="5" hspace="5" src="lab3_06.png" alt=""> <img vspace="5" hspace="5" src="lab3_07.png" alt=""> <h2 id="4">System-level Calculations</h2><pre class="codeinput">t    = linspace(-0.04, 0.04, 301);
+vmph = linspace(    0,   20, 300);
+x    = [];
+
+psiA = a*10^4;
+d    = 662*10^(-3);
+z    = 0.03;
+vms  = vmph.*0.447;
+freq    = vms/pi/d;
+vel    = 0.2*pi*freq;
+
+<span class="keyword">for</span> V = vel
+    x = [x ; t*V];
+<span class="keyword">end</span>
+th = atan2(x , z);
+r  = sqrt(x.^2+z.^2);
+
+Bth =    (C./r.^3).*sin(th);
+Br  = 2.*(C./r.^3).*cos(th);
+Brx = Br.*cos(th);
+Bthz= -1*Bth.*sin(th);
+Bz  = Brx + Bthz;
+psi = psiA.*Bz;
+
+d = [];
+<span class="keyword">for</span> V = 1:numel(vel) <span class="comment">%number of elements in a matrix</span>
+    dv = [];
+    <span class="keyword">for</span> i = 1:(numel( psi(1,:))-1)
+        dv = [dv, (psi(V, i+1) - psi(V, i))/(t(i+1) - t(i))];
+    <span class="keyword">end</span>
+    d = [d, max(dv)];
+<span class="keyword">end</span>
+
+figure
+plot(vmph, d);
+h = legend(<span class="string">'v^{max}_{emf}'</span>, <span class="string">'2.1 V'</span>,<span class="string">'Location'</span>,<span class="string">'northwest'</span>);
+yline(2.10, <span class="string">'--'</span>);
+
+xlabel(<span class="string">'Velocity, mph'</span>);
+xticks([0, 5, 10, 15, 20])
+xlim([0,20])
+ylabel(<span class="string">'v^{max}_{emf}, V'</span>);
+yticks([0, 2, 4, 6, 8])
+ylim([0,8])
+title(<span class="string">'Peak EMF vs. Forward Velocity'</span>)
+</pre><pre class="codeoutput">Warning: Ignoring extra legend entries. 
+</pre><img vspace="5" hspace="5" src="lab3_08.png" alt=""> <p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+clc;
+clear all;
+close all;
+%% Modeling a simple permanent magnet
+x = linspace(-0.02,0.02);
+z = linspace(-0.02,0.02);
+C = 350/(5.8*10^(6));
+[X, Z] = meshgrid(x, z);
+
+th = atan2(X,Z);
+phi= atan2(Z,X);      
+r  = sqrt(X.^2 + Z.^2);   
+r(r <=0.003) = NaN; %excludes number smaller than
+
+Br  = (C*2.*cos(th))./(r.^3); 
+Bth = (C  .*sin(th) ./ r.^3); 
+Bx  = cos(th).*Bth + sin(th).* Br ; 
+Bz  = cos(th).*Br  - sin(th).* Bth; 
+
+figure(1)
+quiver(x , z , Bx , Bz , 6 , 'r'); 
+xlim([-0.02 , 0.02])
+ylim([-0.02 , 0.02])
+title('Vector Plot of B')
+
+%a) |B|
+figure(2)
+magB = sqrt((Bx).^2 + (Bz).^2);   
+pcolor (x , z , magB)                 
+axis equal
+shading interp  
+xlim([-0.02 , 0.02])
+xticks([-0.02 , 0 , 0.02])
+xlabel('x, m')
+yticks([-0.02 , 0 , 0.02])
+ylim([-0.02 , 0.02])
+ylabel('z, m')
+title('|B|')
+hold on
+
+%b) Magnitude of Bx
+figure(3)
+magBx = abs(Bx);      
+pcolor(x , z , magBx)   
+axis equal
+shading interp       
+xlim([-0.02 , 0.02])
+xticks([-0.02, 0, 0.02])
+xlabel('x, m')
+ylim([-0.02 , 0.02])
+yticks([-0.02 , 0 , 0.02])
+ylabel('z, m')
+title('|Bx|')
+hold on
+
+%c) Magnitude of Bz 
+figure(4)
+magBz = abs(Bz);   
+pcolor(x , z , magBz)    
+axis equal
+shading interp     
+xlim([-0.02 , 0.02])
+xlabel('x, m')
+xticks([-0.02 , 0 , 0.02])
+ylim([-0.02,0.02])
+yticks([-0.02 , 0 , 0.02])
+ylabel('z, m')
+title('|Bz|')
+hold on
+
+z    = 7*10^(-3);
+r    = sqrt(x.^2+z^2);
+th   = atan2(x, z);
+
+Bth  = sin(th) .* (C./(r.^3))  ;
+Br   = cos(th) .* (C./(r.^3))*2 ;
+
+Brz  = Br .* cos(th);
+Bthz = -1 .* Bth .*sin(th);
+Bz   =  Bthz + Brz;
+
+figure(5)
+plot(x , Bz);
+title('Flux density with lateral displacement')
+xlabel("x, m");
+xlim([-0.02 , 0.02])
+ylabel("B_z, G");
+ylim([-50 , 400])
+grid on
+%% Field Sensor Responses
+% Flux Through a Moving Loop for Different Vs & Induced EMF for diff vs
+ ph = zeros(1, 101);
+dph = zeros(1, 100);
+a = 10^(-6);
+z   = 0.03;
+for V = [1, 2, 5, 10]
+    t = linspace(-0.04, 0.04, 101);
+    for i = 1: length(t)
+        x  = t(i) * V;
+        th = atan2(x,z);
+        r  = sqrt(x.^2 + z.^2);
+        
+        Br  = 2*C.*cos(th)./r.^3;
+        Bth =   C.*sin(th)./r.^3; 
+        
+        ph(i) = 1e4*(Br.*cos(th)-(Bth).*sin(th))*a;
+        
+        if i ~= 1
+           dph(i-1) =(ph(i) - ph(i-1))/(t(i)-t(i-1)); 
+        end
+    end     
+    tnew = t(1:(length(t)-1));
+    
+    figure(6)
+    plot(t, ph)
+    title('Flux Through a Moving Loop for Different Vs')
+    legend('V = 1  m/s','V = 2  m/s','V = 5  m/s', 'V = 10 m/s')
+    xlabel('t, s')
+    ylabel('\psi, T\bulletm^2')
+    hold on 
+
+    figure(7)
+    plot(tnew, dph)
+    title('Induced EMF(t) for Varying Velocities')
+    legend('V = 1  m/s','V = 2  m/s','V = 5  m/s', 'V = 10 m/s')
+    xlabel('t, s')
+    ylabel('V_E_M_F(t),V')
+    hold on 
+end
+    hold off
+
+    figure(6)
+    xlim([-0.04,0.04])
+    xticks(-0.04: 0.01 :0.04)
+    ylim([-0.01,0.05])
+    yticks(-0.01: 0.01 :0.05)
+    grid on
+
+    figure(7)
+    xlim([-0.04,0.04])
+    xticks(-0.04: 0.01 :0.04)
+    ylim([-30,30])
+    yticks(-30: 10 :30)
+    grid on
+%% System-level Calculations
+t    = linspace(-0.04, 0.04, 301); 
+vmph = linspace(    0,   20, 300);  
+x    = [];
+
+psiA = a*10^4;
+d    = 662*10^(-3);       
+z    = 0.03;
+vms  = vmph.*0.447;        
+freq    = vms/pi/d;       
+vel    = 0.2*pi*freq;      
+
+for V = vel  
+    x = [x ; t*V];
+end
+th = atan2(x , z);
+r  = sqrt(x.^2+z.^2);
+
+Bth =    (C./r.^3).*sin(th); 
+Br  = 2.*(C./r.^3).*cos(th); 
+Brx = Br.*cos(th); 
+Bthz= -1*Bth.*sin(th);
+Bz  = Brx + Bthz;
+psi = psiA.*Bz;
+
+d = [];
+for V = 1:numel(vel) %number of elements in a matrix
+    dv = [];
+    for i = 1:(numel( psi(1,:))-1)
+        dv = [dv, (psi(V, i+1) - psi(V, i))/(t(i+1) - t(i))]; 
+    end
+    d = [d, max(dv)];
+end
+
+figure
+plot(vmph, d);
+h = legend('v^{max}_{emf}', '2.1 V','Location','northwest');
+yline(2.10, 'REPLACE_WITH_DASH_DASH');
+
+xlabel('Velocity, mph');
+xticks([0, 5, 10, 15, 20])
+xlim([0,20])
+ylabel('v^{max}_{emf}, V');
+yticks([0, 2, 4, 6, 8])
+ylim([0,8])
+title('Peak EMF vs. Forward Velocity')
+##### SOURCE END #####
+--></body></html>

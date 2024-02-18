@@ -1,0 +1,284 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>src</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-11-30"><meta name="DC.source" content="src.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">Plane Waves</a></li><li><a href="#3">Spherical Waves</a></li></ul></div><pre class="codeinput">close <span class="string">all</span>
+clear
+clc
+</pre><h2 id="2">Plane Waves</h2><pre class="codeinput">x = linspace(-3, 3, 100);
+y = linspace(-3, 3, 100);
+t = linspace(0, 20, 1001);
+
+[X, Y] = meshgrid(x, y);
+
+phi = pi/6;
+f_xy  = exp((-1j).*(cos(phi).* X + sin(phi).*Y));
+f_xyt =0;
+
+<span class="keyword">for</span> t_ = t
+    figure(1)
+    f_xyt = real((f_xy).*exp(1j*t_)) + f_xyt;
+    drawnow <span class="string">limitrate</span> <span class="string">nocallbacks</span>
+    pcolor(X, Y, f_xyt)
+    shading <span class="string">interp</span>
+    xlabel(<span class="string">'x'</span>)
+    ylabel(<span class="string">'y'</span>)
+<span class="keyword">end</span>
+title(<span class="string">'Planewave at a Fixed Point in Time'</span>)
+</pre><img vspace="5" hspace="5" src="src_01.png" alt=""> <h2 id="3">Spherical Waves</h2><pre class="codeinput">kr   = linspace(0.001, 60, 1000);
+Hkr = real(exp(-1j.*kr)./kr);
+
+d = 1./kr;
+
+figure(2)
+plot(kr, Hkr)
+hold <span class="string">on</span>
+plot(kr, d, <span class="string">'--k'</span>)
+
+xlabel(<span class="string">'kr'</span>)
+ylabel(<span class="string">'h^{(2)}(kr)'</span>)
+ylim([-0.5, 0.5])
+legend(<span class="string">'h^{(2)}_{1}(kr)'</span>,<span class="string">'(kr)^{-1}'</span>)
+title(<span class="string">'Radial Dependance of Spherical Wave'</span>)
+hold <span class="string">off</span>
+</pre><img vspace="5" hspace="5" src="src_02.png" alt=""> <pre class="codeinput">x = linspace(-25, 25, 100);
+z = linspace(-25, 25, 100);
+[X, Z] = meshgrid(x, z);
+
+r  = sqrt(X.^2 + Z.^2);
+th = atan2(abs(X), Z);
+
+figure(3)
+pcolor(X, Z, r)
+legend(<span class="string">'r'</span>)
+xlabel(<span class="string">'x'</span>)
+ylabel(<span class="string">'z'</span>)
+shading <span class="string">interp</span>
+title(<span class="string">'Meshgrids of r for visualizing spherical waves'</span>)
+
+figure(4)
+pcolor(X, Z, th)
+legend(<span class="string">'\theta'</span>)
+xlabel(<span class="string">'x'</span>)
+ylabel(<span class="string">'z'</span>)
+shading <span class="string">interp</span>
+title(<span class="string">'Meshgrids of \Theta for visualizing spherical waves'</span>)
+</pre><img vspace="5" hspace="5" src="src_03.png" alt=""> <img vspace="5" hspace="5" src="src_04.png" alt=""> <pre class="codeinput">x = linspace(-25, 25, 100);
+z = linspace(-25, 25, 100);
+t = linspace(0, 15, 100);
+ti = t;
+[X, Z] = meshgrid(x, z);
+
+a   = 5;
+r   = sqrt(X.^2 + Z.^2);
+th  = atan2(abs(X), Z);
+
+gd  = sin(th);
+gh  = sin(a.*th)./(a.*th);
+Hr  = exp(-1j.*r)./r;
+
+f_rtp   = gd.*Hr;
+f_rtp_h = gh.*Hr;
+
+<span class="keyword">for</span> t_ = t
+    Ft = f_rtp.*exp(1j*t_);
+    figure(5)
+    pcolor(X, Z, real(Ft))
+    drawnow <span class="string">limitrate</span> <span class="string">nocallbacks</span>
+    shading <span class="string">interp</span>
+    caxis([-0.15, 0.15])
+    xlabel(<span class="string">'x'</span>)
+    ylabel(<span class="string">'z'</span>)
+<span class="keyword">end</span>
+title(<span class="string">'Radiation of Dipole'</span>)
+
+<span class="keyword">for</span> ti_ = ti
+    Fti = f_rtp_h.*exp(1j*ti_);
+    figure(6)
+    pcolor(X, Z, real(Fti))
+    drawnow <span class="string">limitrate</span> <span class="string">nocallbacks</span>
+    shading <span class="string">interp</span>
+    caxis([-0.15, 0.15])
+    xlabel(<span class="string">'x'</span>)
+    ylabel(<span class="string">'z'</span>)
+<span class="keyword">end</span>
+title(<span class="string">'Radiation of Horn'</span>)
+</pre><img vspace="5" hspace="5" src="src_05.png" alt=""> <img vspace="5" hspace="5" src="src_06.png" alt=""> <p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+close all
+clear
+clc
+%% Plane Waves 
+x = linspace(-3, 3, 100);
+y = linspace(-3, 3, 100); 
+t = linspace(0, 20, 1001); 
+
+[X, Y] = meshgrid(x, y);
+
+phi = pi/6;
+f_xy  = exp((-1j).*(cos(phi).* X + sin(phi).*Y));
+f_xyt =0;
+
+for t_ = t
+    figure(1)
+    f_xyt = real((f_xy).*exp(1j*t_)) + f_xyt;
+    drawnow limitrate nocallbacks 
+    pcolor(X, Y, f_xyt)
+    shading interp
+    xlabel('x')
+    ylabel('y')
+end 
+title('Planewave at a Fixed Point in Time')
+
+%% Spherical Waves 
+kr   = linspace(0.001, 60, 1000);
+Hkr = real(exp(-1j.*kr)./kr);
+
+d = 1./kr;
+
+figure(2)
+plot(kr, Hkr)
+hold on 
+plot(kr, d, 'REPLACE_WITH_DASH_DASHk')
+
+xlabel('kr')
+ylabel('h^{(2)}(kr)')
+ylim([-0.5, 0.5])
+legend('h^{(2)}_{1}(kr)','(kr)^{-1}')
+title('Radial Dependance of Spherical Wave')
+hold off
+
+%%
+x = linspace(-25, 25, 100);
+z = linspace(-25, 25, 100);
+[X, Z] = meshgrid(x, z); 
+
+r  = sqrt(X.^2 + Z.^2);
+th = atan2(abs(X), Z);
+
+figure(3)
+pcolor(X, Z, r)
+legend('r')
+xlabel('x')
+ylabel('z')
+shading interp
+title('Meshgrids of r for visualizing spherical waves')
+
+figure(4)
+pcolor(X, Z, th)
+legend('\theta')
+xlabel('x')
+ylabel('z')
+shading interp
+title('Meshgrids of \Theta for visualizing spherical waves')
+
+%%
+x = linspace(-25, 25, 100);
+z = linspace(-25, 25, 100);
+t = linspace(0, 15, 100);
+ti = t;
+[X, Z] = meshgrid(x, z); 
+
+a   = 5;
+r   = sqrt(X.^2 + Z.^2);
+th  = atan2(abs(X), Z);
+
+gd  = sin(th); 
+gh  = sin(a.*th)./(a.*th);
+Hr  = exp(-1j.*r)./r;
+
+f_rtp   = gd.*Hr;
+f_rtp_h = gh.*Hr; 
+
+for t_ = t
+    Ft = f_rtp.*exp(1j*t_);
+    figure(5)
+    pcolor(X, Z, real(Ft))
+    drawnow limitrate nocallbacks
+    shading interp
+    caxis([-0.15, 0.15])   
+    xlabel('x')
+    ylabel('z')
+end 
+title('Radiation of Dipole')
+
+for ti_ = ti
+    Fti = f_rtp_h.*exp(1j*ti_);
+    figure(6)
+    pcolor(X, Z, real(Fti))
+    drawnow limitrate nocallbacks
+    shading interp
+    caxis([-0.15, 0.15])   
+    xlabel('x')
+    ylabel('z')
+end 
+title('Radiation of Horn')
+
+
+##### SOURCE END #####
+--></body></html>

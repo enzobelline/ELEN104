@@ -1,0 +1,342 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>a_2</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-10-12"><meta name="DC.source" content="a_2.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">Superposition of vector fields</a></li><li><a href="#3">Cylindrical Coordinates</a></li><li><a href="#4">Visualizing Divergence</a></li></ul></div><pre class="codeinput"><span class="comment">% LAB 2a-A: Visualizing Vectors</span>
+</pre><h2 id="2">Superposition of vector fields</h2><pre class="codeinput">x = linspace(0, 2, 21);
+y = linspace(0, 2, 21);
+[X, Y] = meshgrid(x, y);
+
+A = 1;
+B = 2;
+Xa = -1;
+Xb = 3;
+
+Ea = A./(X - Xa);
+Eb = B./(X - Xb);
+
+<span class="comment">% E_a</span>
+figure
+quiver(X ,Y ,Ea , 0*X,<span class="string">'b'</span>)
+
+xlabel(<span class="string">'x, m'</span>)
+xlim ([0, 2])
+ylabel(<span class="string">'y, m'</span>)
+ylim([0, 2])
+
+title(<span class="string">'E_a'</span>)
+axis <span class="string">square</span>
+
+<span class="comment">% E_b</span>
+figure
+quiver(X, Y, Eb, 0*X, <span class="string">'r'</span>)
+
+xlabel(<span class="string">'x, m'</span>)
+xlim ([0, 2])
+ylabel(<span class="string">'y, m'</span>)
+ylim([0, 2])
+
+title(<span class="string">'E_b'</span>)
+axis <span class="string">square</span>
+
+<span class="comment">%E_a + E_b</span>
+figure
+quiver(X, Y, Ea+Eb, 0*X, <span class="string">'c'</span>)
+
+xlabel(<span class="string">'x, m'</span>)
+xlim ([0, 2])
+
+ylabel(<span class="string">'y, m'</span>)
+ylim([0, 2])
+
+title(<span class="string">'E_a + E_b'</span>)
+axis <span class="string">square</span>
+xticks(0: 0.5 :2)
+
+<span class="comment">%E_a + E_b = 0 @ Xo = 1.3</span>
+figure
+Eb = 0.739 ./(X-Xb);
+quiver(X, Y, Ea + Eb, 0*X, <span class="string">'b'</span>)
+
+xlabel(<span class="string">'x, m'</span>)
+xlim ([0, 2])
+
+ylabel(<span class="string">'y, m'</span>)
+ylim([0, 2])
+
+title(<span class="string">'E_b + E_a = 0 @ Xo = 1.3'</span>)
+axis <span class="string">square</span>
+xticks(0 :0.5: 2)
+</pre><img vspace="5" hspace="5" src="a_2_01.png" alt=""> <img vspace="5" hspace="5" src="a_2_02.png" alt=""> <img vspace="5" hspace="5" src="a_2_03.png" alt=""> <img vspace="5" hspace="5" src="a_2_04.png" alt=""> <h2 id="3">Cylindrical Coordinates</h2><pre class="codeinput"><span class="comment">%cylindrical to cartesian conversions</span>
+figure
+phi  = (0: pi/10: 2*pi);
+x    = 1.5*cos(phi);
+rhox = cos(phi);
+phix = -sin(phi);
+
+y    = 1.5*sin(phi);
+rhoy = sin(phi);
+phiy = cos(phi);
+
+hold <span class="string">on</span>
+quiver (x, y, rhox, rhoy, 0.5)
+quiver (x, y, phix, phiy, 0.5)
+scatter(x, y,<span class="string">'filled'</span>);
+
+title(<span class="string">'Cylindrical Coordinates'</span>)
+xlabel(<span class="string">'x, m'</span>)
+xlim([-3, 3])
+ylabel(<span class="string">'y, m'</span>)
+ylim([-3, 3])
+legend(<span class="string">'\rho'</span>, <span class="string">'\phi'</span>)
+axis <span class="string">square</span>
+hold <span class="string">off</span>
+</pre><img vspace="5" hspace="5" src="a_2_05.png" alt=""> <h2 id="4">Visualizing Divergence</h2><pre class="codeinput">x = linspace(0, 3.1, 32);
+y = linspace(0, 1, 31);
+[X, Y] = meshgrid(x, y);
+
+A  = sin(X); <span class="comment">%xcomp</span>
+dA = cos(X); <span class="comment">%dA/dx</span>
+
+B  = A;      <span class="comment">%ycomp</span>
+dB = 0*Y;    <span class="comment">%dB/dy</span>
+
+figure
+hold <span class="string">on</span>
+p = pcolor(X ,Y, dA);
+set(p, <span class="string">'EdgeColor'</span>, <span class="string">'none'</span>);
+cbh = colorbar;
+cbh.Ticks = linspace(-1, 1, 5);
+quiver(X, Y, A, 0*X,<span class="string">'black'</span>);
+
+title(<span class="string">'Visualizing Divergence: A'</span>)
+ylabel(<span class="string">'y, m'</span>)
+xlabel(<span class="string">'x, m'</span>)
+xlim([0,3.1])
+ylim([0,1])
+yticks(0:(1/5):1)
+legend(<span class="string">'\nabla\cdotA'</span>, <span class="string">'A'</span>)
+hold <span class="string">off</span>
+
+figure
+hold <span class="string">on</span>
+pcolor(X ,Y, dB);
+shading <span class="string">flat</span>
+
+cbh = colorbar;
+cbh.Ticks = linspace(-1, 1, 5);
+quiver(X, Y, 0*X, B,<span class="string">'black'</span>);
+
+title(<span class="string">'Visualizing Divergence: B'</span>)
+ylabel(<span class="string">'y, m'</span>)
+xlabel(<span class="string">'x, m'</span>)
+xlim([0,3.1])
+ylim([0,1])
+yticks(0: .2 :1)
+legend(<span class="string">'\nabla\cdotB'</span>, <span class="string">'B'</span>)
+</pre><img vspace="5" hspace="5" src="a_2_06.png" alt=""> <img vspace="5" hspace="5" src="a_2_07.png" alt=""> <p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+% LAB 2a-A: Visualizing Vectors
+%% Superposition of vector fields
+x = linspace(0, 2, 21);
+y = linspace(0, 2, 21);
+[X, Y] = meshgrid(x, y);
+
+A = 1;
+B = 2;
+Xa = -1;
+Xb = 3;
+
+Ea = A./(X - Xa);
+Eb = B./(X - Xb);
+
+% E_a
+figure
+quiver(X ,Y ,Ea , 0*X,'b')
+
+xlabel('x, m')
+xlim ([0, 2])
+ylabel('y, m')
+ylim([0, 2])
+
+title('E_a')
+axis square
+
+% E_b
+figure
+quiver(X, Y, Eb, 0*X, 'r')
+
+xlabel('x, m')
+xlim ([0, 2])
+ylabel('y, m')
+ylim([0, 2])
+
+title('E_b')
+axis square
+
+%E_a + E_b
+figure
+quiver(X, Y, Ea+Eb, 0*X, 'c')
+
+xlabel('x, m')
+xlim ([0, 2])
+
+ylabel('y, m')
+ylim([0, 2])
+
+title('E_a + E_b')
+axis square
+xticks(0: 0.5 :2)
+
+%E_a + E_b = 0 @ Xo = 1.3
+figure
+Eb = 0.739 ./(X-Xb);
+quiver(X, Y, Ea + Eb, 0*X, 'b')
+
+xlabel('x, m')
+xlim ([0, 2])
+
+ylabel('y, m')
+ylim([0, 2])
+
+title('E_b + E_a = 0 @ Xo = 1.3') 
+axis square
+xticks(0 :0.5: 2)
+
+%% Cylindrical Coordinates
+%cylindrical to cartesian conversions
+figure
+phi  = (0: pi/10: 2*pi);
+x    = 1.5*cos(phi);
+rhox = cos(phi);
+phix = -sin(phi);
+
+y    = 1.5*sin(phi);
+rhoy = sin(phi);
+phiy = cos(phi);
+
+hold on
+quiver (x, y, rhox, rhoy, 0.5)
+quiver (x, y, phix, phiy, 0.5)
+scatter(x, y,'filled');
+
+title('Cylindrical Coordinates')
+xlabel('x, m')
+xlim([-3, 3])
+ylabel('y, m')
+ylim([-3, 3])
+legend('\rho', '\phi')
+axis square
+hold off
+
+%% Visualizing Divergence
+x = linspace(0, 3.1, 32);
+y = linspace(0, 1, 31);
+[X, Y] = meshgrid(x, y);
+
+A  = sin(X); %xcomp
+dA = cos(X); %dA/dx
+
+B  = A;      %ycomp
+dB = 0*Y;    %dB/dy
+
+figure
+hold on
+p = pcolor(X ,Y, dA);
+set(p, 'EdgeColor', 'none');
+cbh = colorbar; 
+cbh.Ticks = linspace(-1, 1, 5);
+quiver(X, Y, A, 0*X,'black');
+
+title('Visualizing Divergence: A')
+ylabel('y, m')
+xlabel('x, m')
+xlim([0,3.1])
+ylim([0,1])
+yticks(0:(1/5):1)
+legend('\nabla\cdotA', 'A')
+hold off
+
+figure
+hold on
+pcolor(X ,Y, dB);
+shading flat
+
+cbh = colorbar; 
+cbh.Ticks = linspace(-1, 1, 5);
+quiver(X, Y, 0*X, B,'black');
+
+title('Visualizing Divergence: B')
+ylabel('y, m')
+xlabel('x, m')
+xlim([0,3.1])
+ylim([0,1])
+yticks(0: .2 :1)
+legend('\nabla\cdotB', 'B')
+##### SOURCE END #####
+--></body></html>

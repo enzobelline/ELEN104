@@ -1,0 +1,79 @@
+//--------------------------------------------------------------------------------------------
+module fullDesign2(A, B, C, D, CI1, BCD0, BCD1, BCD2, BCD3);
+input [3:0] A, B, C, D;
+input CI1;
+//-----------Output Ports---------------
+output [3:0] BCD0, BCD1,BCD2, BCD3;
+
+//------------Internal Variables--------
+
+//initiaize a bus that can be used both as muxOuts and decoderIns
+fullDesign ones (A, B, CI1, BCD0, BCD1);
+
+wire [3:0] R,Sum;
+wire Ci2;
+reg sel;
+// muxes with appropriate sw
+adder4 m2(C, D, BCD1, CO2, Sum);
+adder4 Rem(Sum,6,0,CO2,R);
+
+//Conversion Logic
+always @(*)
+begin
+	if (CO2 || Sum>9) sel = 1;
+		else sel = 0;
+end
+
+mux mx2(sel, Sum, R, BCD2);
+assign BCD3 = {3'b0, sel};
+//-------------Code End-----------------
+endmodule
+
+//---------------------------------------------------------------------------------------------------------------
+module tb2();
+
+reg [3:0] inA, inB, inC, inD;
+reg cin;
+
+wire [3:0] BCD0, BCD1, BCD2,BCD3;
+
+fullDesign2 DUT(inA, inB,inC, inD, cin, BCD0, BCD1, BCD2,BCD3);
+// make sure you either change these names or your own module names
+
+initial begin
+	inA = 5;
+	inB = 3;
+	#10
+	cin = 1; //sum of 9, should not trigger overflow yet
+	#20
+	inA = 9; //now we have overflow, sum of 13
+	#10
+	cin = 0;
+	inA = 8;
+	inB = 8;
+	//part2
+	inC = 5;
+	inA = 5;//55
+	inB = 3;
+	inD = 3;//33
+	#10
+	cin = 0; //sum of 88, should not trigger overflow yet
+	#20
+
+	inC = 7;
+	inA = 5;//75
+	inD = 4;
+	inB = 7;//47
+	#10
+	cin = 0; //sum of 122, should trigger overflow yet
+	#20
+$finish;
+
+end
+
+
+initial begin
+	$monitor("%d %d + %d %d =   %d %d %d", inC, inA, inD, inB, cin, BCD1, BCD0,BCD2,BCD3); //will print out reports in the command line whenever one of these signals changes
+end
+
+endmodule

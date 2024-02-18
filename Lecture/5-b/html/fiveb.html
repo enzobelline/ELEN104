@@ -1,0 +1,238 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>fiveb</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-11-02"><meta name="DC.source" content="fiveb.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">problem 1b</a></li><li><a href="#3">problem 1c</a></li><li><a href="#4">problem 3</a></li></ul></div><pre class="codeinput">close <span class="string">all</span>
+clear
+clc
+</pre><h2 id="2">problem 1b</h2><pre class="codeinput">z = linspace(0.001,10,101);
+e = 8.8542*10^-12;
+ps = 10;
+a = 5;
+
+Ez = (ps/(2*e))*(1-(z./sqrt(a.^2 + z.^2)));
+magEz = abs(Ez);
+
+figure(1)
+loglog(z,Ez)
+</pre><img vspace="5" hspace="5" src="fiveb_01.png" alt=""> <h2 id="3">problem 1c</h2><pre class="codeinput">z = linspace(0.00001,100,1100);
+z1 = linspace(1,100,1100);
+Ez = (ps/(2*e))*(1-(z./sqrt(a.^2+z.^2)));
+Ep = (ps*pi*a^2)./(4*e*pi*z1.^2);
+
+figure(1)
+hold <span class="string">on</span>
+loglog(z,Ez,<span class="string">'black'</span>)
+loglog(z,Ep,<span class="string">'g'</span>)
+legend(<span class="string">'Magnitude of Ez'</span>,<span class="string">'Infinitive Plate Line'</span>,<span class="string">'Point Charge Line'</span>)
+xlim([0.01, 100])
+ylim([10^9, 10^12])
+hold <span class="string">off</span>
+</pre><img vspace="5" hspace="5" src="fiveb_02.png" alt=""> <h2 id="4">problem 3</h2><pre class="codeinput">n = [1,2,3];
+x = linspace(-1,1,40);
+y = linspace(-1,1,40);
+e = 8.8542*10^-12;
+
+[X,Y] = meshgrid(x,y);
+
+r1 = sqrt((X + 0.125).^2 + Y.^2);
+Er1 = (1./(4*pi*(abs(r1.^2).*e)));
+Ex1 = Er1.*(X +0.125);
+Ey1 = Er1.*(Y);
+V1 = (1./(4*pi*(abs(r1).*e)));
+mE1 = abs(Ex1.^2 + Ey1.^2);
+
+r2 = sqrt((X-0.125).^2 + (Y.^2));
+Er2 = (1./(4.*pi.*(abs(r2.^2).*e)));
+Ex2 = Er2.*(X-0.125);
+Ey2 = Er2.*(Y);
+V2  = (1./(4*pi*abs(r2)*e));
+mE2 = abs(Ex2.^2 + Ey2.^2);
+
+figure
+contour(X,Y,V1+V2)
+hold <span class="string">on</span>
+title(<span class="string">'q2 = q1'</span>)
+xticks(-1:0.5:1)
+yticks(-1:0.5:1)
+legend(<span class="string">'Magnitude of E'</span>,<span class="string">'E'</span>)
+
+figure
+contour(X,Y,V1+V2*4)
+hold <span class="string">on</span>
+title(<span class="string">'q2 = 4q1'</span>)
+xticks(-1:0.5:1)
+yticks(-1:0.5:1)
+legend(<span class="string">'Magnitude of E'</span>,<span class="string">'E'</span>)
+
+figure
+contour(X,Y,V1-V2)
+hold <span class="string">on</span>
+title(<span class="string">'-q2 = q1'</span>)
+xticks(-1:0.5:1)
+yticks(-1:0.5:1)
+legend(<span class="string">'Magnitude of E'</span>,<span class="string">'E'</span>)
+
+figure
+contour(X,Y,V1-4*V2)
+hold <span class="string">on</span>
+title(<span class="string">'q2 = -4q1'</span>)
+xticks(-1:0.5:1)
+yticks(-1:0.5:1)
+legend(<span class="string">'Magnitude of E'</span>,<span class="string">'E'</span>)
+</pre><pre class="codeoutput">Warning: Ignoring extra legend entries. 
+Warning: Ignoring extra legend entries. 
+Warning: Ignoring extra legend entries. 
+Warning: Ignoring extra legend entries. 
+</pre><img vspace="5" hspace="5" src="fiveb_03.png" alt=""> <img vspace="5" hspace="5" src="fiveb_04.png" alt=""> <img vspace="5" hspace="5" src="fiveb_05.png" alt=""> <img vspace="5" hspace="5" src="fiveb_06.png" alt=""> <img vspace="5" hspace="5" src="fiveb_07.png" alt=""> <p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+close all
+clear 
+clc 
+%% problem 1b
+z = linspace(0.001,10,101);
+e = 8.8542*10^-12;
+ps = 10;
+a = 5;
+
+Ez = (ps/(2*e))*(1-(z./sqrt(a.^2 + z.^2)));
+magEz = abs(Ez);
+
+figure(1)
+loglog(z,Ez)
+
+%% problem 1c
+z = linspace(0.00001,100,1100);
+z1 = linspace(1,100,1100);
+Ez = (ps/(2*e))*(1-(z./sqrt(a.^2+z.^2)));
+Ep = (ps*pi*a^2)./(4*e*pi*z1.^2);
+
+figure(1)
+hold on
+loglog(z,Ez,'black')
+loglog(z,Ep,'g')
+legend('Magnitude of Ez','Infinitive Plate Line','Point Charge Line')
+xlim([0.01, 100])
+ylim([10^9, 10^12])
+hold off    
+
+%% problem 3
+n = [1,2,3];
+x = linspace(-1,1,40);
+y = linspace(-1,1,40);
+e = 8.8542*10^-12;
+
+[X,Y] = meshgrid(x,y);
+
+r1 = sqrt((X + 0.125).^2 + Y.^2);
+Er1 = (1./(4*pi*(abs(r1.^2).*e)));
+Ex1 = Er1.*(X +0.125);
+Ey1 = Er1.*(Y);
+V1 = (1./(4*pi*(abs(r1).*e)));
+mE1 = abs(Ex1.^2 + Ey1.^2);
+
+r2 = sqrt((X-0.125).^2 + (Y.^2));
+Er2 = (1./(4.*pi.*(abs(r2.^2).*e)));
+Ex2 = Er2.*(X-0.125);
+Ey2 = Er2.*(Y);
+V2  = (1./(4*pi*abs(r2)*e));
+mE2 = abs(Ex2.^2 + Ey2.^2);
+
+figure
+contour(X,Y,V1+V2)
+hold on 
+title('q2 = q1')
+xticks(-1:0.5:1)
+yticks(-1:0.5:1)
+legend('Magnitude of E','E')
+
+figure
+contour(X,Y,V1+V2*4)
+hold on 
+title('q2 = 4q1')
+xticks(-1:0.5:1)
+yticks(-1:0.5:1)
+legend('Magnitude of E','E')
+
+figure
+contour(X,Y,V1-V2)
+hold on 
+title('-q2 = q1')
+xticks(-1:0.5:1)
+yticks(-1:0.5:1)
+legend('Magnitude of E','E')
+
+figure
+contour(X,Y,V1-4*V2)
+hold on 
+title('q2 = -4q1')
+xticks(-1:0.5:1)
+yticks(-1:0.5:1)
+legend('Magnitude of E','E')
+##### SOURCE END #####
+--></body></html>

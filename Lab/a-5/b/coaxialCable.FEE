@@ -1,0 +1,111 @@
+[Format]      =  1
+[Precision]   =  1e-008
+[MinAngle]    =  30
+[DoSmartMesh] =  1
+[Depth]       =  20
+[LengthUnits] =  millimeters
+[ProblemType] =  planar
+[Coordinates] =  cartesian
+[Comment]     =  "Add comments here."
+[PointProps]   = 0
+[BdryProps]   = 0
+[BlockProps]  = 4
+  <BeginBlock>
+    <BlockName> = "Air"
+    <ex> = 1
+    <ey> = 1
+    <qv> = 0
+  <EndBlock>
+  <BeginBlock>
+    <BlockName> = "Copper"
+    <ex> = 6
+    <ey> = 6
+    <qv> = 0
+  <EndBlock>
+  <BeginBlock>
+    <BlockName> = "PVC"
+    <ex> = 4
+    <ey> = 4
+    <qv> = 0
+  <EndBlock>
+  <BeginBlock>
+    <BlockName> = "Teflon"
+    <ex> = 2.2000000000000002
+    <ey> = 2.2000000000000002
+    <qv> = 0
+  <EndBlock>
+[ConductorProps]  = 4
+  <BeginConductor>
+    <ConductorName> = "Infinity"
+    <Vc> = 0
+    <qc> = 0
+    <ConductorType> = 0
+  <EndConductor>
+  <BeginConductor>
+    <ConductorName> = "Inside Copper"
+    <Vc> = 1
+    <qc> = 0
+    <ConductorType> = 1
+  <EndConductor>
+  <BeginConductor>
+    <ConductorName> = "Outisde Copper"
+    <Vc> = 0
+    <qc> = 0
+    <ConductorType> = 1
+  <EndConductor>
+  <BeginConductor>
+    <ConductorName> = "Outisde Noise"
+    <Vc> = 1
+    <qc> = 0
+    <ConductorType> = 1
+  <EndConductor>
+[NumPoints] = 20
+-40	0	0	0	0
+-30	0	0	0	0
+-20	0	0	0	0
+-10	0	0	0	0
+0	10	0	0	0
+0	20	0	0	0
+0	30	0	0	0
+0	40	0	0	0
+10	0	0	0	0
+20	0	0	0	0
+30	0	0	0	0
+40	0	0	0	0
+0	-10	0	0	0
+0	-20	0	0	0
+0	-40	0	0	0
+0	-30	0	0	0
+50	-50	0	0	0
+50	50	0	0	0
+-50	50	0	0	0
+-50	-50	0	0	0
+[NumSegments] = 4
+18	17	-1	0	0	0	4
+17	16	-1	0	0	0	4
+18	19	-1	0	0	0	4
+19	16	-1	0	0	0	4
+[NumArcSegments] = 16
+4	3	90	1	0	0	0	2	1
+3	12	90	1	0	0	0	2	1
+12	8	90	1	0	0	0	2	1
+8	4	90	1	0	0	0	2	1
+5	2	90	1	0	0	0	0	1
+2	13	90	1	0	0	0	0	1
+13	9	90	1	0	0	0	0	1
+9	5	90	1	0	0	0	0	1
+6	1	90	1	0	0	0	3	1
+1	15	90	1	0	0	0	3	1
+15	10	90	1	0	0	0	3	1
+10	6	90	1	0	0	0	3	1
+7	0	90	1	0	0	0	0	1
+0	14	90	1	0	0	0	0	1
+14	11	90	1	0	0	0	0	1
+11	7	90	1	0	0	0	0	1
+[NumHoles] = 0
+[NumBlockLabels] = 5
+-0.40000000000000002	-0.10000000000000001	2	-1	0	0
+15.199999999999999	-0.10000000000000001	3	-1	0	0
+22.199999999999999	-0.40000000000000002	2	-1	0	0
+32.600000000000001	-0.10000000000000001	3	-1	0	0
+44.200000000000003	-0.29999999999999999	1	-1	0	0
